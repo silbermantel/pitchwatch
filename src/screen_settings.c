@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "types.h"
+#include "i18n.h"
 #include "game_logic.h"
 #include "screen_settings.h"
 
@@ -39,23 +40,23 @@ static void window_load(Window *win) {
   game_logic_recalc_max_turn();
 
   s_menu_items[0] = (SimpleMenuItem){
-    .title    = "Zuege/Halbzeit",
+    .title    = i18n_get(KEY_MENU_TURNS),
     .subtitle = game_logic_turns_label(game_logic_get_sel_turns()),
     .callback = cb_turns,
   };
   s_menu_items[1] = (SimpleMenuItem){
-    .title    = "Spielzeit",
+    .title    = i18n_get(KEY_MENU_DURATION),
     .subtitle = game_logic_duration_label(game_logic_get_sel_duration()),
     .callback = cb_duration,
   };
   s_menu_items[2] = (SimpleMenuItem){
-    .title    = "SPIEL STARTEN",
-    .subtitle = "SELECT druecken",
+    .title    = i18n_get(KEY_MENU_START),
+    .subtitle = i18n_get(KEY_MENU_START_SUB),
     .callback = cb_start,
   };
 
   s_menu_section = (SimpleMenuSection){
-    .title     = "Blood Bowl Uhr",
+    .title     = i18n_get(KEY_MENU_TITLE),
     .items     = s_menu_items,
     .num_items = 3,
   };

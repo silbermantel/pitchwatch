@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "types.h"
+#include "i18n.h"
 #include "game_logic.h"
 #include "screen_halftime.h"
 #include "screen_game.h"
@@ -31,7 +32,13 @@ static void window_load(Window *win) {
   GRect  bounds = layer_get_bounds(root);
 
   s_label = text_layer_create(bounds);
-  text_layer_set_text(s_label, "HALBZEIT!\n\nSELECT\nfuer 2. Halbzeit");
+
+  static char halftime_buf[40];
+  snprintf(halftime_buf, sizeof(halftime_buf), "%s\n\n%s",
+           i18n_get(KEY_HALFTIME_TITLE),
+           i18n_get(KEY_HALFTIME_BODY));
+  text_layer_set_text(s_label, halftime_buf);
+
   text_layer_set_font(s_label, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
   text_layer_set_text_alignment(s_label, GTextAlignmentCenter);
   layer_add_child(root, text_layer_get_layer(s_label));
