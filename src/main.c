@@ -3,11 +3,13 @@
 #include "screen_settings.h"
 #include "screen_game.h"
 #include "screen_halftime.h"
+#include "i18n.h"
 
 GameConfig g_config;
 GameData   g_game;
 
 static void init(void) {
+  i18n_init();
   screen_settings_init();
   screen_game_init();
   screen_halftime_init();

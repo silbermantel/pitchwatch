@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "types.h"
+#include "i18n.h"
 #include "game_logic.h"
 #include "screen_game.h"
 
@@ -29,9 +30,11 @@ void screen_game_update_display(void) {
   format_time(turn_buf,  remaining_turn  < 0 ? 0 : remaining_turn);
   format_time(total_buf, remaining_total < 0 ? 0 : remaining_total);
 
-  snprintf(player_buf, sizeof(player_buf), "Spieler %d", g_game.current_player + 1);
-  snprintf(turns_buf,  sizeof(turns_buf),
-           "HZ %d  |  Zug %d/%d",
+  snprintf(player_buf, sizeof(player_buf),
+           i18n_get(KEY_PLAYER), g_game.current_player + 1);
+  snprintf(turns_buf, sizeof(turns_buf),
+           "%s %d  |  %d/%d",
+           i18n_get(KEY_HZ),
            g_game.current_half,
            g_config.turns_per_half - g_game.turns_left[g_game.current_player] + 1,
            g_config.turns_per_half);
@@ -43,16 +46,15 @@ void screen_game_update_display(void) {
 
   if (!g_game.alarm_active) {
     if (g_game.confirm_end_turn) {
-      screen_game_set_status("Zug beenden? [SEL]");
+      screen_game_set_status(i18n_get(KEY_CONFIRM_END));
     } else if (g_game.paused) {
-      screen_game_set_status("PAUSE  [SELECT]");
+      screen_game_set_status(i18n_get(KEY_PAUSE));
     } else {
-      screen_game_set_status("[UP]=Pause [SEL]=Zug?");
+      screen_game_set_status(i18n_get(KEY_HINT));
     }
   }
 }
 
-// ---- Button Handler ----
 static void select_click(ClickRecognizerRef r, void *ctx) {
   if (g_game.state == STATE_GAMEOVER) return;
 
@@ -107,7 +109,6 @@ static void click_config(void *ctx) {
   window_single_click_subscribe(BUTTON_ID_BACK,   back_click);
 }
 
-// ---- Window Lifecycle ----
 static void window_load(Window *win) {
   Layer *root   = window_get_root_layer(win);
   GRect  bounds = layer_get_bounds(root);
